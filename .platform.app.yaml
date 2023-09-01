@@ -22,11 +22,14 @@ relationships:
   
 
 # The size of the persistent disk of the application (in MB). Minimum value is 128.
-# disk: 512
+disk: 1024
 
 # Mounts define directories that are writable after the build is complete. If set as a local source, disk property is required.
 # More information: https://docs.platform.sh/create-apps/app-reference.html#mounts
-# mounts:
+mounts:
+  "Platformify_Cookies_App/static":
+    source: local
+    source_path: static_build
 #   "/.cache": # Represents the path in the app.
 #     source: "local" # "local" sources are unique to the app, while "service" sources can be shared among apps.
 #     source_path: "cache" # The subdirectory within the mounted disk (the source) where the mount should point.
@@ -39,7 +42,7 @@ web:
   commands:
     # The command to launch your app. If it terminates, it’s restarted immediately.
     # You can use the $PORT or the $SOCKET environment variable depending on the socket family of your upstream
-    start: "echo 'Put your web server command in here! You need to listen to \"$UNIX\" unix socket. Read more about it here: https://docs.platform.sh/create-apps/app-reference.html#web-commands'; sleep 60"
+    start: "flask run -p $PORT"
   # You can listen to a UNIX socket (unix) or a TCP port (tcp, default).
   # Whether your app should speak to the webserver via TCP or Unix socket. Defaults to tcp
   # More information: https://docs.platform.sh/create-apps/app-reference.html#where-to-listen
@@ -68,8 +71,9 @@ web:
 # access:
 
 # Variables to control the environment. More information: https://docs.platform.sh/create-apps/app-reference.html#variables
-# variables:
-#   env:
+variables:
+  env:
+    FLASK_APP: autoapp.py
 #     # Add environment variables here that are static.
 #     PYTHONUNBUFFERED: "1"
 
@@ -97,11 +101,15 @@ hooks:
   build: |
     set -eux
     pip install -r requirements.txt
+    n auto
+    hash -r
+    npm install
     
   # The deploy hook is run after the app container has been started, but before it has started accepting requests.
   # More information: https://docs.platform.sh/create-apps/hooks/hooks-comparison.html#deploy-hook
   deploy: |
     set -eux
+    npm run build
     # echo 'Put your deploy command here'
     
 
