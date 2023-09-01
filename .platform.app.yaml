@@ -74,7 +74,7 @@ web:
 variables:
   env:
     FLASK_APP: autoapp.py
-    N_PREFIX: "/app/.global"
+    #N_PREFIX: "/app/.global"
 #     # Add environment variables here that are static.
 #     PYTHONUNBUFFERED: "1"
 
@@ -102,8 +102,6 @@ hooks:
   build: |
     set -eux
     pip install -r requirements.txt
-    n auto
-    hash -r
     npm install
     
   # The deploy hook is run after the app container has been started, but before it has started accepting requests.
