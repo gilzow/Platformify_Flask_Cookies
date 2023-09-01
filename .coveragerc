@@ -1,0 +1,6 @@
+[run]
+source = Platformify_Cookies_App
+omit = 
+    tests/*
+    autoapp.py
+
