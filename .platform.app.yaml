@@ -74,6 +74,7 @@ web:
 variables:
   env:
     FLASK_APP: autoapp.py
+    N_PREFIX: "/app/.global"
 #     # Add environment variables here that are static.
 #     PYTHONUNBUFFERED: "1"
 
